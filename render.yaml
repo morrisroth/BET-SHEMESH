@@ -1,0 +1,10 @@
+services:
+  # Web Service
+  - type: web
+    name: beit-shemeshtech
+    env: node
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_VERSION
+        value: 16
