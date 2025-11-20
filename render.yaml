@@ -2,9 +2,12 @@ services:
   # Web Service
   - type: web
     name: beit-shemeshtech
-    env: node
+    runtime: node
     buildCommand: "npm install"
     startCommand: "npm start"
+    plan: free
     envVars:
       - key: NODE_VERSION
         value: 16
+      - key: NPM_CONFIG_PRODUCTION
+        value: false
