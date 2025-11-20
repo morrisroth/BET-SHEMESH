@@ -431,11 +431,13 @@ const initializeAdmin = async () => {
     }
 };
 
-// Connect to MongoDB and start server
+// MongoDB Connection
 mongoose.connect(MONGO_URI)
-.then(async () => {
-    console.log("MongoDB connected");
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.error("MongoDB error:", err));
+
+// Start server
+app.listen(PORT, async () => {
+    console.log(`Server running on port ${PORT}`);
     await initializeAdmin();
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-})
-.catch(err => console.error("MongoDB connection error:", err));
+});
