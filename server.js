@@ -98,7 +98,7 @@ const Statistics = mongoose.model('Statistics', StatisticsSchema);
 const JWT_SECRET = process.env.JWT_SECRET || 'beitshemeshtech2023secret';
 
 // Email configuration
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER || 'beitshemeshtech@gmail.com',
