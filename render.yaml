@@ -11,3 +11,10 @@ services:
         value: 16
       - key: NPM_CONFIG_PRODUCTION
         value: false
+    buildFilter:
+      paths:
+        - package.json
+        - package-lock.json
+        - node_modules
+        - .npmignore
+        - .nvmrc
