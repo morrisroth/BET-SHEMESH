@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חדשות ומאמרים - הייטק בית שמש</title>
+    <meta name="description" content="כל החדשות והמאמרים על סצנת ההייטק בבית שמש, חברות, כישרונות ואירועים">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/news.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <a href="index.html">הייטק בית שמש</a>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">בית</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="talent.html" class="nav-link">כישרונות</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="news.html" class="nav-link active">חדשות</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">צור קשר</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="admin/login.html" class="nav-link">ניהול</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>חדשות ומאמרים</h1>
+                <p>העדכונים האחרונים מסצנת ההייטק של בית שמש</p>
+            </div>
+        </section>
+
+        <section class="search-section">
+            <div class="container">
+                <div class="search-container">
+                    <form id="searchForm" class="search-form">
+                        <div class="search-input-group">
+                            <input type="text" id="searchInput" placeholder="חפש מאמרים, חדשות או נושאים...">
+                            <button type="submit" class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="filter-options">
+                        <div class="filter-group">
+                            <label>קטגוריה:</label>
+                            <select id="categoryFilter">
+                                <option value="">כל הקטגוריות</option>
+                                <option value="startups">סטארטאפים</option>
+                                <option value="education">הכשרות</option>
+                                <option value="events">אירועים</option>
+                                <option value="success">סיפורי הצלחה</option>
+                                <option value="technology">טכנולוגיה</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>מיון לפי:</label>
+                            <select id="sortFilter">
+                                <option value="date-desc">תאריך (חדש לישן)</option>
+                                <option value="date-asc">תאריך (ישן לחדש)</option>
+                                <option value="title-asc">כותרת (א-ת)</option>
+                                <option value="title-desc">כותרת (ת-א)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-article">
+            <div class="container">
+                <div class="featured-card">
+                    <div class="featured-image">
+                        <img src="https://picsum.photos/seed/featured-tech/800/400.jpg" alt="מאמר מומלץ">
+                    </div>
+                    <div class="featured-content">
+                        <div class="article-meta">
+                            <span class="article-category">סטארטאפים</span>
+                            <span class="article-date">18 בנובמבר 2023</span>
+                        </div>
+                        <h2 class="featured-title">סטארטאפ מקומי גייס 10 מיליון דולר בסבב גיוס חדש</h2>
+                        <p class="featured-excerpt">חברת TechInnovate מבית שמש הודיעה היום על סיום סבב גיוס מוצלח בסך 10 מיליון דולר, שיאמץ להרחיב את פעילותה ולגייס עוד 20 מפתחים מהעיר...</p>
+                        <a href="#" class="btn btn-primary">קרא עוד</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="articles-section">
+            <div class="container">
+                <div class="articles-grid" id="articlesGrid">
+                    <!-- Article 1 -->
+                    <article class="article-card" data-category="education" data-date="2023-11-15">
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/bootcamp-tech/400/250.jpg" alt="תמונת מאמר">
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-category">הכשרות</span>
+                                <span class="article-date">15 בנובמבר 2023</span>
+                            </div>
+                            <h3 class="article-title">תוכנית הכשרה חדשה ל-Full Stack נפתחת בבית שמש</h3>
+                            <p class="article-excerpt">מרכז ההכשרות הטכנולוגיות בבית שמש מכריז על פתיחת תוכנית חדשה ומקיפה להכשרת מפתחי Full Stack...</p>
+                            <a href="#" class="read-more">קרא עוד</a>
+                        </div>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article class="article-card" data-category="events" data-date="2023-11-10">
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/tech-event/400/250.jpg" alt="תמונת מאמר">
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-category">אירועים</span>
+                                <span class="article-date">10 בנובמבר 2023</span>
+                            </div>
+                            <h3 class="article-title">כנס הייטק בית שמש 2023: הצלחה מסחררת</h3>
+                            <p class="article-excerpt">מעל 500 משתתפים הגיעו לכנס ההייטק השנתי של בית שמש, שם נחשפו החידושים האחרונים בתעשייה...</p>
+                            <a href="#" class="read-more">קרא עוד</a>
+                        </div>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article class="article-card" data-category="success" data-date="2023-11-05">
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/success-story/400/250.jpg" alt="תמונת מאמר">
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-category">סיפורי הצלחה</span>
+                                <span class="article-date">5 בנובמבר 2023</span>
+                            </div>
+                            <h3 class="article-title">מהקורס להייטק: סיפורה של מתכנתת מבית שמש</h3>
+                            <p class="article-excerpt">רחל כהן, בוגרת קורס פיתוח תוכנה בבית שמש, מספרת איך הפכה מעקרת בית למפתחת מובילה בחברת הייטק גדולה...</p>
+                            <a href="#" class="read-more">קרא עוד</a>
+                        </div>
+                    </article>
+
+                    <!-- Article 4 -->
+                    <article class="article-card" data-category="technology" data-date="2023-10-28">
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/ai-technology/400/250.jpg" alt="תמונת מאמר">
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-category">טכנולוגיה</span>
+                                <span class="article-date">28 באוקטובר 2023</span>
+                            </div>
+                            <h3 class="article-title">המהפכה המלאכותית: איך בית שמש הופכת למרכז AI</h3>
+                            <p class="article-excerpt">חברות הייטק בבית שמש משקיעות משאבים רבים בפיתוח פתרונות בינה מלאכותית ולמידת מכונה...</p>
+                            <a href="#" class="read-more">קרא עוד</a>
+                        </div>
+                    </article>
+
+                    <!-- Article 5 -->
+                    <article class="article-card" data-category="startups" data-date="2023-10-20">
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/startup-funding/400/250.jpg" alt="תמונת מאמר">
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-category">סטארטאפים</span>
+                                <span class="article-date">20 באוקטובר 2023</span>
+                            </div>
+                            <h3 class="article-title">שלושה סטארטאפים חדשים נפתחו בבית שמש החודש</h3>
+                            <p class="article-excerpt">האקוסיסטם הטכנולוגי של בית שמש ממשיך לצמוח עם פתיחתן של שלוש חברות הזנק חדשניות...</p>
+                            <a href="#" class="read-more">קרא עוד</a>
+                        </div>
+                    </article>
+
+                    <!-- Article 6 -->
+                    <article class="article-card" data-category="education" data-date="2023-10-15">
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/cyber-security/400/250.jpg" alt="תמונת מאמר">
+                        </div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-category">הכשרות</span>
+                                <span class="article-date">15 באוקטובר 2023</span>
+                            </div>
+                            <h3 class="article-title">הכשרות החדשות בסייבר 2023</h3>
+                            <p class="article-excerpt">מרכז הסייבר הלאומי משיק תוכנית הכשרה חדשה בבית שמש למאבק באיומי סייבר מתקדמים...</p>
+                            <a href="#" class="read-more">קרא עוד</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="pagination">
+                    <button class="pagination-btn" id="prevPage" disabled>
+                        <i class="fas fa-chevron-right"></i>
+                        הקודם
+                    </button>
+                    <div class="pagination-numbers">
+                        <span class="page-number active">1</span>
+                        <span class="page-number">2</span>
+                        <span class="page-number">3</span>
+                    </div>
+                    <button class="pagination-btn" id="nextPage">
+                        הבא
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter-section">
+            <div class="container">
+                <div class="newsletter-card">
+                    <div class="newsletter-content">
+                        <h2>הירשם לניוזלטר שלנו</h2>
+                        <p>קבל את כל החדשות והעדכונים מסצנת ההייטק של בית שמש ישירות למייל</p>
+                        <form id="newsletterForm" class="newsletter-form">
+                            <div class="form-group">
+                                <input type="email" id="emailInput" placeholder="דוא"ל שלך" required>
+                                <button type="submit" class="btn btn-primary">הירשם</button>
+                            </div>
+                        </form>
+                        <div id="newsletterMessage" class="newsletter-message"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>הייטק בית שמש</h3>
+                    <p>מרכז הכישרונות הטכנולוגיים של העיר</p>
+                </div>
+                <div class="footer-links">
+                    <h4>קישורים מהירים</h4>
+                    <ul>
+                        <li><a href="index.html">בית</a></li>
+                        <li><a href="talent.html">כישרונות</a></li>
+                        <li><a href="news.html">חדשות</a></li>
+                        <li><a href="contact.html">צור קשר</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>צור קשר</h4>
+                    <p>דוא"ל: info@beitshemeshtech.org</p>
+                    <p>טלפון: 03-1234567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 הייטק בית שמש. כל הזכויות שמורות.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-cta">
+        <a href="contact.html" class="btn btn-primary">צור קשר</a>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/news.js"></script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>צור קשר - הייטק בית שמש</title>
+    <meta name="description" content="צור קשר עם צוות הייטק בית שמש לגיוס מפתחים, שיתופי פעולה ואירועים">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <a href="index.html">הייטק בית שמש</a>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">בית</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="talent.html" class="nav-link">כישרונות</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="news.html" class="nav-link">חדשות</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link active">צור קשר</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="admin/login.html" class="nav-link">ניהול</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>צור קשר</h1>
+                <p>בואו נדבר על איך בית שמש יכולה לעזור לחברה שלכם למצוא את הכישרונות הבאים</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-form-container">
+                        <div class="form-header">
+                            <h2>שלחו לנו הודעה</h2>
+                            <p>מלאו את הטופס ונחזור אליכם בהקדם</p>
+                        </div>
+                        <form id="contactForm" class="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="companyName">שם החברה *</label>
+                                    <input type="text" id="companyName" name="companyName" required>
+                                    <span class="error-message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactPerson">איש קשר *</label>
+                                    <input type="text" id="contactPerson" name="contactPerson" required>
+                                    <span class="error-message"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">דוא"ל *</label>
+                                    <input type="email" id="email" name="email" required>
+                                    <span class="error-message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">טלפון</label>
+                                    <input type="tel" id="phone" name="phone">
+                                    <span class="error-message"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reason">סיבת פנייה *</label>
+                                <select id="reason" name="reason" required>
+                                    <option value="">בחרו סיבה</option>
+                                    <option value="recruitment">גיוס מפתחים</option>
+                                    <option value="partnership">שיתוף פעולה</option>
+                                    <option value="events">אירועים והרצאות</option>
+                                    <option value="education">תוכניות הכשרה</option>
+                                    <option value="other">אחר</option>
+                                </select>
+                                <span class="error-message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="developersNeeded">מספר המפתחים הדרוש</label>
+                                <select id="developersNeeded" name="developersNeeded">
+                                    <option value="">בחרו כמות</option>
+                                    <option value="1-3">1-3</option>
+                                    <option value="4-10">4-10</option>
+                                    <option value="11-20">11-20</option>
+                                    <option value="20+">20+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="techStack">טכנולוגיות נדרשות</label>
+                                <div class="tech-checkboxes">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="techStack" value="frontend">
+                                        <span class="checkmark"></span>
+                                        Frontend
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="techStack" value="backend">
+                                        <span class="checkmark"></span>
+                                        Backend
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="techStack" value="mobile">
+                                        <span class="checkmark"></span>
+                                        Mobile
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="techStack" value="devops">
+                                        <span class="checkmark"></span>
+                                        DevOps
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="techStack" value="qa">
+                                        <span class="checkmark"></span>
+                                        QA
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="techStack" value="data">
+                                        <span class="checkmark"></span>
+                                        Data Science
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">הודעה נוספת</label>
+                                <textarea id="message" name="message" rows="5" placeholder="ספרו לנו עוד על הצרכים שלכם..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter" name="newsletter">
+                                    <span class="checkmark"></span>
+                                    אני מעוניין לקבל עדכונים וחדשות מהייטק בית שמש
+                                </label>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">שלח הודעה</button>
+                                <button type="reset" class="btn btn-secondary">נקה טופס</button>
+                            </div>
+                        </form>
+                        <div id="formMessage" class="form-message"></div>
+                    </div>
+
+                    <div class="contact-info">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>כתובת</h3>
+                                <p>רחוב ההייטק 1<br>בית שמש</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>טלפון</h3>
+                                <p>03-1234567</p>
+                                <p>ימים א'-ה' 9:00-18:00</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>דוא"ל</h3>
+                                <p>info@beitshemeshtech.org</p>
+                                <p>jobs@beitshemeshtech.org</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>זמני פעילות</h3>
+                                <p>ימים א'-ה': 9:00-18:00</p>
+                                <p>יום שישי: 9:00-13:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="process-section">
+            <div class="container">
+                <h2 class="section-title">תהליך עבודתנו</h2>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>קבלת פנייה</h3>
+                            <p>אנחנו מקבלים את הפרטים שלכם ומבינים את הצרכים</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>איתור כישרונות</h3>
+                            <p>אנחנו מאתרים את המפתחים המתאימים ביותר מהקהילה שלנו</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>סינון ומיון</h3>
+                            <p>אנחנו מבצעים ראיונות הכנה ומסננים את המועמדים הטובים ביותר</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>התאמה וגיוס</h3>
+                            <p>אנחנו מחברים בינכם לבין המועמדים המתאימים לגיוס</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials-section">
+            <div class="container">
+                <h2 class="section-title">מה חברות אומרות עלינו</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"הצלחנו לגייס צוות של 8 מפתחים מוכשרים תוך חודש. השירות המקצועי וההבנה של הצרכים שלנו היו מעולים."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4>דניאל כהן</h4>
+                                <p>מנכ"ל, TechStart</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"הרמה המקצועית של המפתחים שקיבלנו מבית שמש פשוט מדהימה. הם הפכו חלק מרכזי בצוות שלנו."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4>שרה לוי</h4>
+                                <p>מנהלת פיתוח, CodeVision</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"התהליך היה חלק ויעיל. קיבלנו מועמדים רלוונטיים ומוכנים לעבודה כבר בשלב הראיון הראשון."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4>משה ישראלי</h4>
+                                <p>CTO, AppSolutions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="container">
+                <h2 class="section-title">שאלות נפוצות</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>כמה זמן לוקח תהליך הגיוס?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>בממוצע, תהליך הגיוס אורך 3-4 שבועות מרגע קבלת הפנייה ועד להעסקת המועמד הראשון. הזמן יכול להשתנות בהתאם לדרישות הספציפיות של המשרה.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>מה עלויות השירות?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>העלות משתנה בהתאם להיקף הגיוס והדרישות. אנחנו מציעים מודלים שונים כולל תשלום חד-פעמי או אחוז מהשכר. נשמח לספק הצעה מפורטת לאחר הבנת הצרכים שלכם.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>האם יש אחריות על המועמדים?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>כן, אנחנו נותנים אחריות של 3 חודשים על כל מועמד שמגויס דרכנו. במקרה של סיום עבודה בתקופה זו, נספק מועמד חלופי ללא עלות נוספת.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>האם אתם עובדים עם חברות מחוץ לישראל?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>כן, אנחנו עובדים עם חברות ישראליות ובינלאומיות כאחד. המפתחים שלנו מוכשרים לעבודה עם לקוחות מכל העולם ודוברי אנגלית ברמה גבוהה.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>הייטק בית שמש</h3>
+                    <p>מרכז הכישרונות הטכנולוגיים של העיר</p>
+                </div>
+                <div class="footer-links">
+                    <h4>קישורים מהירים</h4>
+                    <ul>
+                        <li><a href="index.html">בית</a></li>
+                        <li><a href="talent.html">כישרונות</a></li>
+                        <li><a href="news.html">חדשות</a></li>
+                        <li><a href="contact.html">צור קשר</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>צור קשר</h4>
+                    <p>דוא"ל: info@beitshemeshtech.org</p>
+                    <p>טלפון: 03-1234567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 הייטק בית שמש. כל הזכויות שמורות.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-cta">
+        <a href="contact.html" class="btn btn-primary">צור קשר</a>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/contact.js"></script>
+</body>
+</html>

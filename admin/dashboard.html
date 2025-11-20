@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לוח בקרה - מערכת ניהול</title>
+    <meta name="description" content="לוח בקרה לניהול תוכן ומידע">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-dashboard">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2>מערכת ניהול</h2>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">מנהל מערכת</div>
+                        <a href="login.html" class="logout-link">יציאה</a>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a href="#dashboard" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>לוח בקרה</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#articles" class="nav-link">
+                            <i class="fas fa-newspaper"></i>
+                            <span>מאמרים</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#statistics" class="nav-link">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>סטטיסטיקות</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#submissions" class="nav-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>פניות</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#analytics" class="nav-link">
+                            <i class="fas fa-analytics"></i>
+                            <span>אנליטיקה</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#settings" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>הגדרות</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h1>לוח בקרה</h1>
+                    <p>ברוכים הבאים למערכת ניהול הייטק בית שמש</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addArticleBtn">
+                        <i class="fas fa-plus"></i>
+                        הוסף מאמר חדש
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <section id="dashboard-section" class="content-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-number">24</h3>
+                                <p class="stat-label">מאמרים פורסמו</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-number">156</h3>
+                                <p class="stat-label">פניות מחברות</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-number">523</h3>
+                                <p class="stat-label">מפתחים רשומים</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-number">8,432</h3>
+                                <p class="stat-label">צפיות באתר</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>מאמרים אחרונים</h3>
+                                <a href="#articles" class="view-all">צפייה בכולם</a>
+                            </div>
+                            <div class="card-content">
+                                <div class="recent-items">
+                                    <div class="recent-item">
+                                        <div class="item-info">
+                                            <h4>הכשרות החדשות בסייבר 2023</h4>
+                                            <p>פורסם לפני 2 ימים</p>
+                                        </div>
+                                        <div class="item-actions">
+                                            <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="recent-item">
+                                        <div class="item-info">
+                                            <h4>סטארטאפ מקומי גייס 10 מיליון דולר</h4>
+                                            <p>פורסם לפני 5 ימים</p>
+                                        </div>
+                                        <div class="item-actions">
+                                            <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="recent-item">
+                                        <div class="item-info">
+                                            <h4>תוכנית הכשרה חדשה ל-Full Stack</h4>
+                                            <p>פורסם לפני שבוע</p>
+                                        </div>
+                                        <div class="item-actions">
+                                            <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>פניות אחרונות</h3>
+                                <a href="#submissions" class="view-all">צפייה בכולן</a>
+                            </div>
+                            <div class="card-content">
+                                <div class="recent-items">
+                                    <div class="recent-item">
+                                        <div class="item-info">
+                                            <h4>Tech Solutions Ltd</h4>
+                                            <p>מחפשים 5 מפתחי Frontend</p>
+                                            <span class="item-status new">חדש</span>
+                                        </div>
+                                        <div class="item-actions">
+                                            <button class="btn-icon view"><i class="fas fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="recent-item">
+                                        <div class="item-info">
+                                            <h4>App Innovations</h4>
+                                            <p>שיתוף פעולה לפרויקט מיוחד</p>
+                                            <span class="item-status pending">ממתין</span>
+                                        </div>
+                                        <div class="item-actions">
+                                            <button class="btn-icon view"><i class="fas fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="recent-item">
+                                        <div class="item-info">
+                                            <h4>Cloud Systems</h4>
+                                            <p>אירוע גיוס למפתחים</p>
+                                            <span class="item-status responded">טופל</span>
+                                        </div>
+                                        <div class="item-actions">
+                                            <button class="btn-icon view"><i class="fas fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="articles-section" class="content-section">
+                    <div class="section-header">
+                        <h2>ניהול מאמרים</h2>
+                        <button class="btn btn-primary" id="newArticleBtn">
+                            <i class="fas fa-plus"></i>
+                            מאמר חדש
+                        </button>
+                    </div>
+                    <div class="articles-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>כותרת</th>
+                                    <th>מחבר</th>
+                                    <th>תאריך פרסום</th>
+                                    <th>סטטוס</th>
+                                    <th>פעולות</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>הכשרות החדשות בסייבר 2023</td>
+                                    <td>מנהל מערכת</td>
+                                    <td>18/11/2023</td>
+                                    <td><span class="status published">פורסם</span></td>
+                                    <td>
+                                        <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>סטארטאפ מקומי גייס 10 מיליון דולר</td>
+                                    <td>מנהל מערכת</td>
+                                    <td>15/11/2023</td>
+                                    <td><span class="status published">פורסם</span></td>
+                                    <td>
+                                        <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>תוכנית הכשרה חדשה ל-Full Stack</td>
+                                    <td>מנהל מערכת</td>
+                                    <td>11/11/2023</td>
+                                    <td><span class="status draft">טיוטה</span></td>
+                                    <td>
+                                        <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="statistics-section" class="content-section">
+                    <div class="section-header">
+                        <h2>ניהול סטטיסטיקות</h2>
+                        <button class="btn btn-primary" id="addStatisticBtn">
+                            <i class="fas fa-plus"></i>
+                            עדכון סטטיסטיקה
+                        </button>
+                    </div>
+                    <div class="statistics-form">
+                        <form id="statisticsForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="devCount">מספר מפתחים</label>
+                                    <input type="number" id="devCount" name="devCount" value="500">
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyCount">מספר חברות</label>
+                                    <input type="number" id="companyCount" name="companyCount" value="30">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bootcampCount">תוכניות הכשרה</label>
+                                    <input type="number" id="bootcampCount" name="bootcampCount" value="8">
+                                </div>
+                                <div class="form-group">
+                                    <label for="successRate">אחוז הצלחה</label>
+                                    <input type="number" id="successRate" name="successRate" value="95">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">עדכן סטטיסטיקות</button>
+                        </form>
+                    </div>
+                </section>
+
+                <section id="submissions-section" class="content-section">
+                    <div class="section-header">
+                        <h2>ניהול פניות</h2>
+                    </div>
+                    <div class="submissions-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>שם חברה</th>
+                                    <th>איש קשר</th>
+                                    <th>סיבת פנייה</th>
+                                    <th>תאריך</th>
+                                    <th>סטטוס</th>
+                                    <th>פעולות</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tech Solutions Ltd</td>
+                                    <td>דניאל כהן</td>
+                                    <td>גיוס מפתחים</td>
+                                    <td>20/11/2023</td>
+                                    <td><span class="status new">חדש</span></td>
+                                    <td>
+                                        <button class="btn-icon view"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon respond"><i class="fas fa-reply"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>App Innovations</td>
+                                    <td>שרה לוי</td>
+                                    <td>שיתוף פעולה</td>
+                                    <td>19/11/2023</td>
+                                    <td><span class="status pending">ממתין</span></td>
+                                    <td>
+                                        <button class="btn-icon view"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon respond"><i class="fas fa-reply"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="analytics-section" class="content-section">
+                    <div class="section-header">
+                        <h2>אנליטיקה</h2>
+                    </div>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h3>תעבורה לאתר</h3>
+                            <div class="chart-container">
+                                <canvas id="trafficChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>פניות מחברות</h3>
+                            <div class="chart-container">
+                                <canvas id="submissionsChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>מקורות תעבורה</h3>
+                            <div class="chart-container">
+                                <canvas id="sourcesChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>דפים פופולריים</h3>
+                            <div class="popular-pages">
+                                <div class="page-item">
+                                    <span class="page-name">דף הבית</span>
+                                    <span class="page-views">3,245 צפיות</span>
+                                </div>
+                                <div class="page-item">
+                                    <span class="page-name">כישרונות</span>
+                                    <span class="page-views">2,187 צפיות</span>
+                                </div>
+                                <div class="page-item">
+                                    <span class="page-name">צור קשר</span>
+                                    <span class="page-views">1,523 צפיות</span>
+                                </div>
+                                <div class="page-item">
+                                    <span class="page-name">חדשות</span>
+                                    <span class="page-views">987 צפיות</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="settings-section" class="content-section">
+                    <div class="section-header">
+                        <h2>הגדרות</h2>
+                    </div>
+                    <div class="settings-form">
+                        <form id="settingsForm">
+                            <div class="form-group">
+                                <label for="siteTitle">כותרת האתר</label>
+                                <input type="text" id="siteTitle" name="siteTitle" value="הייטק בית שמש">
+                            </div>
+                            <div class="form-group">
+                                <label for="siteDescription">תיאור האתר</label>
+                                <textarea id="siteDescription" name="siteDescription" rows="3">מרכז הכישרונות הטכנולוגיים של בית שמש</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">דוא"ל ליצירת קשר</label>
+                                <input type="email" id="contactEmail" name="contactEmail" value="info@beitshemeshtech.org">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">טלפון ליצירת קשר</label>
+                                <input type="tel" id="contactPhone" name="contactPhone" value="03-1234567">
+                            </div>
+                            <button type="submit" class="btn btn-primary">שמור הגדרות</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for adding/editing articles -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">הוסף מאמר חדש</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="articleForm">
+                    <div class="form-group">
+                        <label for="articleTitle">כותרת</label>
+                        <input type="text" id="articleTitle" name="articleTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleAuthor">מחבר</label>
+                        <input type="text" id="articleAuthor" name="articleAuthor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleContent">תוכן</label>
+                        <textarea id="articleContent" name="articleContent" rows="10" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleStatus">סטטוס</label>
+                        <select id="articleStatus" name="articleStatus">
+                            <option value="draft">טיוטה</option>
+                            <option value="published">פורסם</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary modal-cancel">ביטול</button>
+                        <button type="submit" class="btn btn-primary">שמור</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/admin-dashboard-backend.js"></script>
+</body>
+</html>
