@@ -87,14 +87,13 @@ function initModals() {
     const addArticleBtn = document.getElementById('addArticleBtn');
     const newArticleBtn = document.getElementById('newArticleBtn');
     const articleModal = document.getElementById('articleModal');
-    const modalClose = document.querySelector('.modal-close');
-    const modalCancel = document.querySelector('.modal-cancel');
     
     function openModal() {
         if (articleModal) {
             articleModal.classList.add('active');
             document.getElementById('modalTitle').textContent = 'הוסף מאמר חדש';
             document.getElementById('articleForm').reset();
+            delete document.getElementById('articleForm').dataset.articleId;
         }
     }
     
@@ -106,17 +105,26 @@ function initModals() {
     
     if (addArticleBtn) addArticleBtn.addEventListener('click', openModal);
     if (newArticleBtn) newArticleBtn.addEventListener('click', openModal);
-    if (modalClose) modalClose.addEventListener('click', closeModal);
-    if (modalCancel) modalCancel.addEventListener('click', closeModal);
+    
+    // Set up modal close buttons for all modals
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal-close')) {
+            const modal = e.target.closest('.modal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        if (e.target.classList.contains('modal-cancel')) {
+            const modal = e.target.closest('.modal');
+            if (modal) modal.classList.remove('active');
+        }
+    });
     
     // Close modal when clicking outside
-    if (articleModal) {
-        articleModal.addEventListener('click', function(e) {
-            if (e.target === articleModal) {
-                closeModal();
-            }
-        });
-    }
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal')) {
+            e.target.classList.remove('active');
+        }
+    });
 }
 
 // Initialize charts
@@ -222,16 +230,27 @@ function initFormHandlers() {
             e.preventDefault();
             
             const formData = new FormData(this);
+            const tags = formData.get('articleTags') ? formData.get('articleTags').split(',').map(tag => tag.trim()) : [];
+            
             const articleData = {
                 title: formData.get('articleTitle'),
                 author: formData.get('articleAuthor'),
+                category: formData.get('articleCategory'),
                 content: formData.get('articleContent'),
+                excerpt: formData.get('articleExcerpt'),
+                image: formData.get('articleImage'),
+                tags: tags,
                 status: formData.get('articleStatus'),
                 date: new Date().toISOString()
             };
             
-            // Simulate saving article
-            saveArticle(articleData);
+            // Check if editing or creating
+            const articleId = this.dataset.articleId;
+            if (articleId) {
+                updateArticle(articleId, articleData);
+            } else {
+                saveArticle(articleData);
+            }
         });
     }
 }
@@ -344,9 +363,11 @@ function saveArticle(articleData) {
         // Show success message
         showNotification('המאמר נשמר בהצלחה!', 'success');
         
-        // Reset button
+        // Reset button and form
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
+        document.getElementById('articleForm').reset();
+        delete document.getElementById('articleForm').dataset.articleId;
         
         // Reload articles
         loadDashboardData();
@@ -361,29 +382,99 @@ function saveArticle(articleData) {
     });
 }
 
+// Update article function
+function updateArticle(id, articleData) {
+    // Show loading state
+    const submitBtn = document.querySelector('#articleForm button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> מעדכן...';
+    
+    const token = localStorage.getItem('adminToken');
+    
+    fetch(`/api/articles/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(articleData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Close modal
+        document.getElementById('articleModal').classList.remove('active');
+        
+        // Show success message
+        showNotification('המאמר עודכן בהצלחה!', 'success');
+        
+        // Reset button and form
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        document.getElementById('articleForm').reset();
+        delete document.getElementById('articleForm').dataset.articleId;
+        
+        // Reload articles
+        loadDashboardData();
+    })
+    .catch(error => {
+        console.error('Error updating article:', error);
+        showNotification('שגיאה בעדכון המאמר', 'error');
+        
+        // Reset button
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    });
+}
+
 // Edit article function
-function editArticle(title) {
-    // Open modal with article data
+window.editArticle = function(id) {
+    const token = localStorage.getItem('adminToken');
+    
+    // Fetch article data
+    fetch(`/api/articles/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(article => {
+        openEditArticleModal(article);
+    })
+    .catch(error => {
+        console.error('Error fetching article:', error);
+        showNotification('שגיאה בטעינת פרטי המאמר', 'error');
+    });
+};
+
+// Open edit article modal
+function openEditArticleModal(article) {
     const modal = document.getElementById('articleModal');
     const modalTitle = document.getElementById('modalTitle');
     
     modalTitle.textContent = 'ערוך מאמר';
     modal.classList.add('active');
     
-    // In a real app, you would load article data
-    console.log('Editing article:', title);
+    // Populate form with article data
+    document.getElementById('articleTitle').value = article.title;
+    document.getElementById('articleAuthor').value = article.author;
+    document.getElementById('articleCategory').value = article.category || '';
+    document.getElementById('articleImage').value = article.image || '';
+    document.getElementById('articleContent').value = article.content;
+    document.getElementById('articleExcerpt').value = article.excerpt || '';
+    document.getElementById('articleTags').value = article.tags ? article.tags.join(', ') : '';
+    document.getElementById('articleStatus').value = article.status;
+    
+    // Store article ID for form submission
+    document.getElementById('articleForm').dataset.articleId = article._id;
 }
 
 // Delete article function
-function deleteArticle(title, row) {
-    if (confirm(`האם אתה בטוח שברצונך למחוק את המאמר "${title}"?`)) {
-        // Show loading state
-        row.style.opacity = '0.5';
-        
+window.deleteArticle = function(id) {
+    if (confirm('האם אתה בטוח שברצונך למחוק מאמר זה?')) {
         const token = localStorage.getItem('adminToken');
         
-        // Simulate API call
-        fetch(`/api/articles/${row.dataset.id}`, {
+        fetch(`/api/articles/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -391,31 +482,298 @@ function deleteArticle(title, row) {
         })
         .then(response => response.json())
         .then(data => {
-            // Remove row
-            row.remove();
-            
-            // Show success message
             showNotification('המאמר נמחק בהצלחה!', 'success');
+            loadDashboardData(); // Reload data
         })
         .catch(error => {
             console.error('Error deleting article:', error);
             showNotification('שגיאה במחיקת המאמר', 'error');
         });
     }
-}
+};
 
 // View submission function
-function viewSubmission(company) {
-    // In a real app, you would open a modal with submission details
-    console.log('Viewing submission:', company);
-    showNotification(`פרטי הפנייה מ-${company}`, 'info');
+function viewSubmission(id) {
+    const token = localStorage.getItem('adminToken');
+    
+    // Fetch full submission details
+    fetch(`/api/contact/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(contact => {
+        showSubmissionModal(contact);
+    })
+    .catch(error => {
+        console.error('Error fetching submission details:', error);
+        showNotification('שגיאה בטעינת פרטי הפנייה', 'error');
+    });
 }
 
 // Respond to submission function
-function respondToSubmission(company) {
-    // In a real app, you would open a modal to compose a response
-    console.log('Responding to submission:', company);
-    showNotification(`פתיחת חלון תגובה ל-${company}`, 'info');
+function respondToSubmission(id) {
+    const token = localStorage.getItem('adminToken');
+    
+    // Fetch submission details first
+    fetch(`/api/contact/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(contact => {
+        showResponseModal(contact);
+    })
+    .catch(error => {
+        console.error('Error fetching submission details:', error);
+        showNotification('שגיאה בטעינת פרטי הפנייה', 'error');
+    });
+}
+
+// Show submission details modal
+function showSubmissionModal(contact) {
+    // Create modal if it doesn't exist
+    let modal = document.getElementById('submissionModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'submissionModal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>פרטי פנייה</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="submission-details">
+                        <div class="detail-row">
+                            <span class="detail-label">שם חברה:</span>
+                            <span class="detail-value" id="modalCompanyName"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">איש קשר:</span>
+                            <span class="detail-value" id="modalContactPerson"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">דוא"ל:</span>
+                            <span class="detail-value" id="modalEmail"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">טלפון:</span>
+                            <span class="detail-value" id="modalPhone"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">סיבת פנייה:</span>
+                            <span class="detail-value" id="modalReason"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">מספר מפתחים דרוש:</span>
+                            <span class="detail-value" id="modalDevelopersNeeded"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">טכנולוגיות:</span>
+                            <span class="detail-value" id="modalTechStack"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">הודעה:</span>
+                            <span class="detail-value" id="modalMessage"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">תאריך:</span>
+                            <span class="detail-value" id="modalDate"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">סטטוס:</span>
+                            <span class="detail-value" id="modalStatus"></span>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" id="respondBtn">הגב</button>
+                        <button class="btn btn-secondary modal-cancel">סגור</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    // Populate modal with contact data
+    document.getElementById('modalCompanyName').textContent = contact.companyName;
+    document.getElementById('modalContactPerson').textContent = contact.contactPerson;
+    document.getElementById('modalEmail').textContent = contact.email;
+    document.getElementById('modalPhone').textContent = contact.phone || 'לא צוין';
+    document.getElementById('modalReason').textContent = getReasonText(contact.reason);
+    document.getElementById('modalDevelopersNeeded').textContent = contact.developersNeeded || 'לא צוין';
+    document.getElementById('modalTechStack').textContent = contact.techStack ? contact.techStack.join(', ') : 'לא צוין';
+    document.getElementById('modalMessage').textContent = contact.message || 'לא צוינה';
+    document.getElementById('modalDate').textContent = new Date(contact.date).toLocaleDateString('he-IL');
+    document.getElementById('modalStatus').textContent = getStatusText(contact.status);
+    
+    // Show modal
+    modal.classList.add('active');
+    
+    // Set up event listeners
+    const closeBtn = modal.querySelector('.modal-close');
+    const cancelBtn = modal.querySelector('.modal-cancel');
+    const respondBtn = modal.querySelector('#respondBtn');
+    
+    const closeModal = () => {
+        modal.classList.remove('active');
+    };
+    
+    closeBtn.onclick = closeModal;
+    cancelBtn.onclick = closeModal;
+    respondBtn.onclick = () => {
+        closeModal();
+        showResponseModal(contact);
+    };
+    
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    };
+}
+
+// Show response modal
+function showResponseModal(contact) {
+    // Create modal if it doesn't exist
+    let modal = document.getElementById('responseModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'responseModal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>הגב לפנייה</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="contact-summary">
+                        <h4>פרטי הפונה:</h4>
+                        <p><strong>חברה:</strong> <span id="responseCompanyName"></span></p>
+                        <p><strong>איש קשר:</strong> <span id="responseContactPerson"></span></p>
+                        <p><strong>דוא"ל:</strong> <span id="responseEmail"></span></p>
+                    </div>
+                    <form id="responseForm">
+                        <div class="form-group">
+                            <label for="responseSubject">נושא</label>
+                            <input type="text" id="responseSubject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="responseMessage">תוכן התגובה</label>
+                            <textarea id="responseMessage" name="message" rows="8" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateStatus">עדכן סטטוס</label>
+                            <select id="updateStatus" name="status">
+                                <option value="new">חדש</option>
+                                <option value="in-progress">בטיפול</option>
+                                <option value="completed">הושלם</option>
+                            </select>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="submit" class="btn btn-primary">שלח תגובה</button>
+                            <button type="button" class="btn btn-secondary modal-cancel">ביטול</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    // Populate modal with contact data
+    document.getElementById('responseCompanyName').textContent = contact.companyName;
+    document.getElementById('responseContactPerson').textContent = contact.contactPerson;
+    document.getElementById('responseEmail').textContent = contact.email;
+    document.getElementById('responseSubject').value = `תגובה לפנייה מ-${contact.companyName}`;
+    document.getElementById('updateStatus').value = contact.status;
+    
+    // Show modal
+    modal.classList.add('active');
+    
+    // Set up form submission
+    const responseForm = document.getElementById('responseForm');
+    responseForm.onsubmit = (e) => {
+        e.preventDefault();
+        submitResponse(contact._id);
+    };
+    
+    // Set up event listeners
+    const closeBtn = modal.querySelector('.modal-close');
+    const cancelBtn = modal.querySelector('.modal-cancel');
+    
+    const closeModal = () => {
+        modal.classList.remove('active');
+    };
+    
+    closeBtn.onclick = closeModal;
+    cancelBtn.onclick = closeModal;
+    
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    };
+}
+
+// Submit response
+function submitResponse(contactId) {
+    const token = localStorage.getItem('adminToken');
+    const responseForm = document.getElementById('responseForm');
+    const formData = new FormData(responseForm);
+    
+    const responseData = {
+        contactId: contactId,
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        status: formData.get('status')
+    };
+    
+    // Show loading state
+    const submitBtn = responseForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> שולח...';
+    
+    fetch('/api/contact/respond', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(responseData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        showNotification('התגובה נשלחה בהצלחה!', 'success');
+        document.getElementById('responseModal').classList.remove('active');
+        loadDashboardData(); // Reload data to update status
+    })
+    .catch(error => {
+        console.error('Error sending response:', error);
+        showNotification('שגיאה בשליחת התגובה', 'error');
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    });
+}
+
+// Get reason text in Hebrew
+function getReasonText(reason) {
+    const reasonMap = {
+        'recruitment': 'גיוס מפתחים',
+        'partnership': 'שיתוף פעולה',
+        'events': 'אירועים והרצאות',
+        'education': 'תוכניות הכשרה',
+        'other': 'אחר'
+    };
+    return reasonMap[reason] || reason;
 }
 
 // Update statistics function
@@ -587,11 +945,12 @@ function updateArticlesTable(articles) {
         <tr data-id="${article._id}">
             <td>${article.title}</td>
             <td>${article.author}</td>
+            <td>${getCategoryText(article.category)}</td>
             <td>${new Date(article.date).toLocaleDateString('he-IL')}</td>
             <td><span class="status ${article.status}">${article.status === 'published' ? 'פורסם' : 'טיוטה'}</span></td>
             <td>
-                <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
-                <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                <button class="btn-icon edit" onclick="editArticle('${article._id}')"><i class="fas fa-edit"></i></button>
+                <button class="btn-icon delete" onclick="deleteArticle('${article._id}')"><i class="fas fa-trash"></i></button>
             </td>
         </tr>
     `).join('');
@@ -606,12 +965,12 @@ function updateContactsTable(contacts) {
         <tr data-id="${contact._id}">
             <td>${contact.companyName}</td>
             <td>${contact.contactPerson}</td>
-            <td>${contact.reason}</td>
+            <td>${getReasonText(contact.reason)}</td>
             <td>${new Date(contact.date).toLocaleDateString('he-IL')}</td>
             <td><span class="status ${contact.status}">${getStatusText(contact.status)}</span></td>
             <td>
-                <button class="btn-icon view"><i class="fas fa-eye"></i></button>
-                <button class="btn-icon respond"><i class="fas fa-reply"></i></button>
+                <button class="btn-icon view" onclick="viewSubmission('${contact._id}')"><i class="fas fa-eye"></i></button>
+                <button class="btn-icon respond" onclick="respondToSubmission('${contact._id}')"><i class="fas fa-reply"></i></button>
             </td>
         </tr>
     `).join('');
@@ -675,6 +1034,18 @@ function getStatusText(status) {
         'completed': 'הושלם'
     };
     return statusMap[status] || status;
+}
+
+// Get category text in Hebrew
+function getCategoryText(category) {
+    const categoryMap = {
+        'startups': 'סטארטאפים',
+        'education': 'הכשרות',
+        'events': 'אירועים',
+        'success': 'הצלחות',
+        'technology': 'טכנולוגיה'
+    };
+    return categoryMap[category] || category;
 }
 
 // Show notification function

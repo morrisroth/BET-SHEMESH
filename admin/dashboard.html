@@ -435,8 +435,31 @@
                         <input type="text" id="articleAuthor" name="articleAuthor" required>
                     </div>
                     <div class="form-group">
+                        <label for="articleCategory">קטגוריה</label>
+                        <select id="articleCategory" name="articleCategory" required>
+                            <option value="">בחר קטגוריה</option>
+                            <option value="startups">סטארטאפים</option>
+                            <option value="education">הכשרות</option>
+                            <option value="events">אירועים</option>
+                            <option value="success">הצלחות</option>
+                            <option value="technology">טכנולוגיה</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleImage">קישור לתמונה</label>
+                        <input type="url" id="articleImage" name="articleImage" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
                         <label for="articleContent">תוכן</label>
                         <textarea id="articleContent" name="articleContent" rows="10" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleExcerpt">תקציר</label>
+                        <textarea id="articleExcerpt" name="articleExcerpt" rows="3" placeholder="תקציר קצר שיוצג ברשימת המאמרים"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleTags">תגיות (מופרדות בפסיק)</label>
+                        <input type="text" id="articleTags" name="articleTags" placeholder="טכנולוגיה, הייטק, בית שמש">
                     </div>
                     <div class="form-group">
                         <label for="articleStatus">סטטוס</label>
@@ -448,6 +471,104 @@
                     <div class="form-actions">
                         <button type="button" class="btn btn-secondary modal-cancel">ביטול</button>
                         <button type="submit" class="btn btn-primary">שמור</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for viewing submission details -->
+    <div id="submissionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>פרטי פנייה</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="submission-details">
+                    <div class="detail-row">
+                        <span class="detail-label">שם חברה:</span>
+                        <span class="detail-value" id="modalCompanyName"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">איש קשר:</span>
+                        <span class="detail-value" id="modalContactPerson"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">דוא"ל:</span>
+                        <span class="detail-value" id="modalEmail"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">טלפון:</span>
+                        <span class="detail-value" id="modalPhone"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">סיבת פנייה:</span>
+                        <span class="detail-value" id="modalReason"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">מספר מפתחים דרוש:</span>
+                        <span class="detail-value" id="modalDevelopersNeeded"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">טכנולוגיות:</span>
+                        <span class="detail-value" id="modalTechStack"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">הודעה:</span>
+                        <span class="detail-value" id="modalMessage"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">תאריך:</span>
+                        <span class="detail-value" id="modalDate"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">סטטוס:</span>
+                        <span class="detail-value" id="modalStatus"></span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="respondBtn">הגב</button>
+                    <button class="btn btn-secondary modal-cancel">סגור</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for responding to submissions -->
+    <div id="responseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>הגב לפנייה</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="contact-summary">
+                    <h4>פרטי הפונה:</h4>
+                    <p><strong>חברה:</strong> <span id="responseCompanyName"></span></p>
+                    <p><strong>איש קשר:</strong> <span id="responseContactPerson"></span></p>
+                    <p><strong>דוא"ל:</strong> <span id="responseEmail"></span></p>
+                </div>
+                <form id="responseForm">
+                    <div class="form-group">
+                        <label for="responseSubject">נושא</label>
+                        <input type="text" id="responseSubject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="responseMessage">תוכן התגובה</label>
+                        <textarea id="responseMessage" name="message" rows="8" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStatus">עדכן סטטוס</label>
+                        <select id="updateStatus" name="status">
+                            <option value="new">חדש</option>
+                            <option value="in-progress">בטיפול</option>
+                            <option value="completed">הושלם</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn btn-primary">שלח תגובה</button>
+                        <button type="button" class="btn btn-secondary modal-cancel">ביטול</button>
                     </div>
                 </form>
             </div>

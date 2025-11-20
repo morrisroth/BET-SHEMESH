@@ -97,6 +97,9 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_USER || 'beitshemeshtech@gmail.com',
         pass: process.env.EMAIL_PASS || 'your-app-password'
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
@@ -263,54 +266,75 @@ app.delete('/api/articles/:id', verifyToken, async (req, res) => {
     }
 });
 
+// Get single article by ID
+app.get('/api/articles/:id', verifyToken, async (req, res) => {
+    try {
+        const article = await Article.findById(req.params.id);
+        
+        if (!article) {
+            return res.status(404).json({ message: 'מאמר לא נמצא' });
+        }
+        
+        res.json(article);
+    } catch (error) {
+        res.status(500).json({ message: 'שגיאת שרת', error: error.message });
+    }
+});
+
 // Contact API
 app.post('/api/contact', async (req, res) => {
     try {
         const contact = new Contact(req.body);
         await contact.save();
 
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: contact.email,
-            subject: 'קבלת פנייה - הייטק בית שמש',
-            html: `
-                <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.6;">
-                    <h2 style="color: #0066cc;">תודה על פנייתך!</h2>
-                    <p>שלום ${contact.contactPerson},</p>
-                    <p>קיבלנו את פנייתך מ-${contact.companyName} ונעשה להגיב בהקדם האפשרי.</p>
-                    <p><strong>סיבת פנייה:</strong> ${contact.reason}</p>
-                    ${contact.message ? `<p><strong>הודעה:</strong> ${contact.message}</p>` : ''}
-                    <p>במידה ונעשה לעזור לך למצוא את הכישרונות הטובים ביותר בבית שמש.</p>
-                    <br>
-                    <p>בברכה,<br>צוות הייטק בית שמש</p>
-                </div>
-            `
-        };
-        await transporter.sendMail(mailOptions);
+        // Try to send emails, but don't fail if email sending fails
+        try {
+            const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: contact.email,
+                subject: 'קבלת פנייה - הייטק בית שמש',
+                html: `
+                    <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.6;">
+                        <h2 style="color: #0066cc;">תודה על פנייתך!</h2>
+                        <p>שלום ${contact.contactPerson},</p>
+                        <p>קיבלנו את פנייתך מ-${contact.companyName} ונעשה להגיב בהקדם האפשרי.</p>
+                        <p><strong>סיבת פנייה:</strong> ${contact.reason}</p>
+                        ${contact.message ? `<p><strong>הודעה:</strong> ${contact.message}</p>` : ''}
+                        <p>במידה ונעשה לעזור לך למצוא את הכישרונות הטובים ביותר בבית שמש.</p>
+                        <br>
+                        <p>בברכה,<br>צוות הייטק בית שמש</p>
+                    </div>
+                `
+            };
+            await transporter.sendMail(mailOptions);
 
-        const adminMailOptions = {
-            from: process.env.EMAIL_USER,
-            to: process.env.ADMIN_EMAIL || 'info@beitshemeshtech.org',
-            subject: `פנייה חדשה מ-${contact.companyName}`,
-            html: `
-                <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.6;">
-                    <h2 style="color: #0066cc;">פנייה חדשה מחברה</h2>
-                    <p><strong>שם חברה:</strong> ${contact.companyName}</p>
-                    <p><strong>איש קשר:</strong> ${contact.contactPerson}</p>
-                    <p><strong>דוא"ל:</strong> ${contact.email}</p>
-                    <p><strong>טלפון:</strong> ${contact.phone || 'לא צוין'}</p>
-                    <p><strong>סיבת פנייה:</strong> ${contact.reason}</p>
-                    ${contact.developersNeeded ? `<p><strong>מספר מפתחים דרוש:</strong> ${contact.developersNeeded}</p>` : ''}
-                    ${contact.techStack && contact.techStack.length > 0 ? `<p><strong>טכנולוגיות:</strong> ${contact.techStack.join(', ')}</p>` : ''}
-                    ${contact.message ? `<p><strong>הודעה:</strong> ${contact.message}</p>` : ''}
-                    <p>נא לטפל בפנייה זו במערכת הניהול.</p>
-                </div>
-            `
-        };
-        await transporter.sendMail(adminMailOptions);
+            const adminMailOptions = {
+                from: process.env.EMAIL_USER,
+                to: process.env.ADMIN_EMAIL || 'info@beitshemeshtech.org',
+                subject: `פנייה חדשה מ-${contact.companyName}`,
+                html: `
+                    <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.6;">
+                        <h2 style="color: #0066cc;">פנייה חדשה מחברה</h2>
+                        <p><strong>שם חברה:</strong> ${contact.companyName}</p>
+                        <p><strong>איש קשר:</strong> ${contact.contactPerson}</p>
+                        <p><strong>דוא"ל:</strong> ${contact.email}</p>
+                        <p><strong>טלפון:</strong> ${contact.phone || 'לא צוין'}</p>
+                        <p><strong>סיבת פנייה:</strong> ${contact.reason}</p>
+                        ${contact.developersNeeded ? `<p><strong>מספר מפתחים דרוש:</strong> ${contact.developersNeeded}</p>` : ''}
+                        ${contact.techStack && contact.techStack.length > 0 ? `<p><strong>טכנולוגיות:</strong> ${contact.techStack.join(', ')}</p>` : ''}
+                        ${contact.message ? `<p><strong>הודעה:</strong> ${contact.message}</p>` : ''}
+                        <p>נא לטפל בפנייה זו במערכת הניהול.</p>
+                    </div>
+                `
+            };
+            await transporter.sendMail(adminMailOptions);
+        } catch (emailError) {
+            console.error('Email sending failed, but contact was saved:', emailError.message);
+        }
 
         res.status(201).json({ message: 'הפנייה נשלחה בהצלחה' });
     } catch (error) {
+        console.error('Contact form error:', error);
         res.status(500).json({ message: 'שגיאת שרת', error: error.message });
     }
 });
@@ -340,6 +364,93 @@ app.get('/api/contact', verifyToken, async (req, res) => {
             }
         });
     } catch (error) {
+        res.status(500).json({ message: 'שגיאת שרת', error: error.message });
+    }
+});
+
+// Get single contact by ID
+app.get('/api/contact/:id', verifyToken, async (req, res) => {
+    try {
+        const contact = await Contact.findById(req.params.id);
+        
+        if (!contact) {
+            return res.status(404).json({ message: 'פנייה לא נמצאה' });
+        }
+        
+        res.json(contact);
+    } catch (error) {
+        res.status(500).json({ message: 'שגיאת שרת', error: error.message });
+    }
+});
+
+// Update contact status
+app.put('/api/contact/:id/status', verifyToken, async (req, res) => {
+    try {
+        const { status } = req.body;
+        
+        const contact = await Contact.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true, runValidators: true }
+        );
+        
+        if (!contact) {
+            return res.status(404).json({ message: 'פנייה לא נמצאה' });
+        }
+        
+        res.json({ message: 'סטטוס עודכן בהצלחה', contact });
+    } catch (error) {
+        res.status(500).json({ message: 'שגיאת שרת', error: error.message });
+    }
+});
+
+// Respond to contact
+app.post('/api/contact/respond', verifyToken, async (req, res) => {
+    try {
+        const { contactId, subject, message, status } = req.body;
+        
+        // Find the contact
+        const contact = await Contact.findById(contactId);
+        if (!contact) {
+            return res.status(404).json({ message: 'פנייה לא נמצאה' });
+        }
+        
+        // Update contact status
+        contact.status = status;
+        await contact.save();
+        
+        // Try to send email response
+        try {
+            const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: contact.email,
+                subject: subject,
+                html: `
+                    <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.6;">
+                        <h2 style="color: #0066cc;">תגובה מהייטק בית שמש</h2>
+                        <p>שלום ${contact.contactPerson},</p>
+                        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                            ${message.replace(/\n/g, '<br>')}
+                        </div>
+                        <p>במידה ונעשה לעזור לך למצוא את הכישרונות הטובים ביותר בבית שמש.</p>
+                        <br>
+                        <p>בברכה,<br>צוות הייטק בית שמש</p>
+                        <hr>
+                        <p style="font-size: 0.8em; color: #666;">
+                            דוא"ל זה נשלח בתגובה לפנייתך מתאריך ${new Date(contact.date).toLocaleDateString('he-IL')}
+                        </p>
+                    </div>
+                `
+            };
+            await transporter.sendMail(mailOptions);
+        } catch (emailError) {
+            console.error('Email sending failed:', emailError.message);
+            // Don't fail the request if email fails
+        }
+        
+        res.json({ message: 'התגובה נשלחה בהצלחה' });
+    } catch (error) {
+        console.error('Error responding to contact:', error);
         res.status(500).json({ message: 'שגיאת שרת', error: error.message });
     }
 });
