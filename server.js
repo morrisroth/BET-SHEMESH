@@ -13,6 +13,8 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 require('dotenv').config();
 
+const MONGO_URI = process.env.MONGODB_URI;
+
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,14 +38,6 @@ app.use('/api/', limiter);
 
 // Serve static files
 app.use(express.static(path.join(__dirname)));
-
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.error("MongoDB error:", err));
 
 // Schemas
 const ArticleSchema = new mongoose.Schema({
@@ -109,11 +103,11 @@ const transporter = nodemailer.createTransport({
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1];
-    
+
     if (!token) {
         return res.status(403).json({ message: 'טוקן נדרש' });
     }
-    
+
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded;
@@ -156,27 +150,26 @@ app.get('/admin/dashboard.html', verifyToken, (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        
+
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(401).json({ message: 'שם משתמש או סיסמה שגויים' });
         }
-        
+
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: 'שם משתמש או סיסמה שגויים' });
         }
-        
-        // Update last login
+
         user.lastLogin = new Date();
         await user.save();
-        
+
         const token = jwt.sign(
             { id: user._id, username: user.username, role: user.role },
             JWT_SECRET,
             { expiresIn: '24h' }
         );
-        
+
         res.json({
             message: 'התחברות הצליחה',
             token,
@@ -196,7 +189,7 @@ app.get('/api/articles', async (req, res) => {
     try {
         const { page = 1, limit = 10, category, search, status = 'published' } = req.query;
         const skip = (page - 1) * limit;
-        
+
         let query = { status };
         if (category) query.category = category;
         if (search) {
@@ -206,14 +199,14 @@ app.get('/api/articles', async (req, res) => {
                 { tags: { $in: [new RegExp(search, 'i')] } }
             ];
         }
-        
+
         const articles = await Article.find(query)
             .sort({ date: -1 })
             .skip(skip)
             .limit(parseInt(limit));
-            
+
         const total = await Article.countDocuments(query);
-        
+
         res.json({
             articles,
             pagination: {
@@ -245,11 +238,11 @@ app.put('/api/articles/:id', verifyToken, async (req, res) => {
             req.body,
             { new: true, runValidators: true }
         );
-        
+
         if (!article) {
             return res.status(404).json({ message: 'מאמר לא נמצא' });
         }
-        
+
         res.json({ message: 'המאמר עודכן בהצלחה', article });
     } catch (error) {
         res.status(500).json({ message: 'שגיאת שרת', error: error.message });
@@ -259,11 +252,11 @@ app.put('/api/articles/:id', verifyToken, async (req, res) => {
 app.delete('/api/articles/:id', verifyToken, async (req, res) => {
     try {
         const article = await Article.findByIdAndDelete(req.params.id);
-        
+
         if (!article) {
             return res.status(404).json({ message: 'מאמר לא נמצא' });
         }
-        
+
         res.json({ message: 'המאמר נמחק בהצלחה' });
     } catch (error) {
         res.status(500).json({ message: 'שגיאת שרת', error: error.message });
@@ -275,8 +268,7 @@ app.post('/api/contact', async (req, res) => {
     try {
         const contact = new Contact(req.body);
         await contact.save();
-        
-        // Send confirmation email
+
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: contact.email,
@@ -294,10 +286,8 @@ app.post('/api/contact', async (req, res) => {
                 </div>
             `
         };
-        
         await transporter.sendMail(mailOptions);
-        
-        // Send notification to admin
+
         const adminMailOptions = {
             from: process.env.EMAIL_USER,
             to: process.env.ADMIN_EMAIL || 'info@beitshemeshtech.org',
@@ -317,9 +307,8 @@ app.post('/api/contact', async (req, res) => {
                 </div>
             `
         };
-        
         await transporter.sendMail(adminMailOptions);
-        
+
         res.status(201).json({ message: 'הפנייה נשלחה בהצלחה' });
     } catch (error) {
         res.status(500).json({ message: 'שגיאת שרת', error: error.message });
@@ -330,17 +319,17 @@ app.get('/api/contact', verifyToken, async (req, res) => {
     try {
         const { page = 1, limit = 10, status } = req.query;
         const skip = (page - 1) * limit;
-        
+
         let query = {};
         if (status) query.status = status;
-        
+
         const contacts = await Contact.find(query)
             .sort({ date: -1 })
             .skip(skip)
             .limit(parseInt(limit));
-            
+
         const total = await Contact.countDocuments(query);
-        
+
         res.json({
             contacts,
             pagination: {
@@ -363,7 +352,7 @@ app.get('/api/statistics', async (req, res) => {
             statistics = new Statistics();
             await statistics.save();
         }
-        
+
         res.json(statistics);
     } catch (error) {
         res.status(500).json({ message: 'שגיאת שרת', error: error.message });
@@ -373,14 +362,12 @@ app.get('/api/statistics', async (req, res) => {
 app.put('/api/statistics', verifyToken, async (req, res) => {
     try {
         let statistics = await Statistics.findOne();
-        if (!statistics) {
-            statistics = new Statistics();
-        }
-        
+        if (!statistics) statistics = new Statistics();
+
         Object.assign(statistics, req.body);
         statistics.lastUpdated = new Date();
         await statistics.save();
-        
+
         res.json({ message: 'הסטטיסטיקות עודכנו בהצלחה', statistics });
     } catch (error) {
         res.status(500).json({ message: 'שגיאת שרת', error: error.message });
@@ -391,7 +378,7 @@ app.put('/api/statistics', verifyToken, async (req, res) => {
 app.get('/api/analytics', verifyToken, async (req, res) => {
     try {
         const { period = 'month' } = req.query;
-        
+
         let dateFilter = {};
         if (period === 'week') {
             dateFilter = { date: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } };
@@ -400,33 +387,29 @@ app.get('/api/analytics', verifyToken, async (req, res) => {
         } else if (period === 'year') {
             dateFilter = { date: { $gte: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000) } };
         }
-        
+
         const contactsByPeriod = await Contact.aggregate([
             { $match: dateFilter },
             { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } }, count: { $sum: 1 } } },
             { $sort: { _id: 1 } }
         ]);
-        
+
         const articlesByPeriod = await Article.aggregate([
             { $match: { ...dateFilter, status: 'published' } },
             { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } }, count: { $sum: 1 } } },
             { $sort: { _id: 1 } }
         ]);
-        
+
         const totalContacts = await Contact.countDocuments();
         const totalArticles = await Article.countDocuments({ status: 'published' });
         const contactsByStatus = await Contact.aggregate([
             { $group: { _id: '$status', count: { $sum: 1 } } }
         ]);
-        
+
         res.json({
             contactsByPeriod,
             articlesByPeriod,
-            overview: {
-                totalContacts,
-                totalArticles,
-                contactsByStatus
-            }
+            overview: { totalContacts, totalArticles, contactsByStatus }
         });
     } catch (error) {
         res.status(500).json({ message: 'שגיאת שרת', error: error.message });
@@ -439,11 +422,7 @@ const initializeAdmin = async () => {
         const adminExists = await User.findOne({ username: 'admin' });
         if (!adminExists) {
             const hashedPassword = await bcrypt.hash('beitshemeshtech2023', 10);
-            const admin = new User({
-                username: 'admin',
-                password: hashedPassword,
-                role: 'admin'
-            });
+            const admin = new User({ username: 'admin', password: hashedPassword, role: 'admin' });
             await admin.save();
             console.log('Default admin user created');
         }
@@ -452,8 +431,11 @@ const initializeAdmin = async () => {
     }
 };
 
-// Start server
-app.listen(PORT, async () => {
-    console.log(`Server running on port ${PORT}`);
+// Connect to MongoDB and start server
+mongoose.connect(MONGO_URI)
+.then(async () => {
+    console.log("MongoDB connected");
     await initializeAdmin();
-});
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+})
+.catch(err => console.error("MongoDB connection error:", err));
