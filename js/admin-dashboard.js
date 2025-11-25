@@ -18,33 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
 // Check if user is authenticated
 function checkAuth() {
     const token = localStorage.getItem('adminToken');
+    const user = localStorage.getItem('adminUser');
     
-    if (!token) {
+    if (!token || !user) {
         window.location.href = 'login.html';
         return;
     }
     
-    // Verify token with server
-    fetch('/api/auth/verify', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Token invalid');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Token is valid, continue
-        console.log('User authenticated:', data.user);
-    })
-    .catch(error => {
-        console.error('Authentication error:', error);
-        localStorage.removeItem('adminToken');
-        window.location.href = 'login.html';
-    });
+    // Token exists, continue to dashboard
+    console.log('User authenticated:', JSON.parse(user));
 }
 
 // Initialize navigation
@@ -624,7 +606,8 @@ function saveSettings(settings) {
 
 // Logout function
 function logout() {
-    localStorage.removeItem('adminLoggedIn');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
     localStorage.removeItem('loginTime');
     window.location.href = 'login.html';
 }

@@ -28,20 +28,34 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show loading state
             showLoading();
             
-            // Simulate API call
-            setTimeout(() => {
-                if (authenticate(username, password)) {
-                    // Store login state
-                    localStorage.setItem('adminLoggedIn', 'true');
-                    localStorage.setItem('loginTime', new Date().toISOString());
-                    
-                    // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
-                } else {
-                    showError('שם משתמש או סיסמה שגויים. נסו שוב.');
+            // Make real API call
+            fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Login failed');
                 }
+                return response.json();
+            })
+            .then(data => {
+                // Store login state
+                localStorage.setItem('adminToken', data.token);
+                localStorage.setItem('adminUser', JSON.stringify(data.user));
+                localStorage.setItem('loginTime', new Date().toISOString());
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                showError('שם משתמש או סיסמה שגויים. נסו שוב.');
                 hideLoading();
-            }, 1000);
+            });
         });
     }
     
