@@ -908,6 +908,7 @@ function loadDashboardData() {
     .then(response => response.json())
     .then(data => {
         updateArticlesTable(data.articles);
+        updateRecentArticles(data.articles);
     })
     .catch(error => console.error('Error loading articles:', error));
     
@@ -920,6 +921,7 @@ function loadDashboardData() {
     .then(response => response.json())
     .then(data => {
         updateContactsTable(data.contacts);
+        updateRecentContacts(data.contacts);
     })
     .catch(error => console.error('Error loading contacts:', error));
     
@@ -950,7 +952,7 @@ function loadDashboardData() {
 
 // Update articles table
 function updateArticlesTable(articles) {
-    const tbody = document.querySelector('.admin-table tbody');
+    const tbody = document.querySelector('#articlesTableBody');
     if (!tbody) return;
     
     tbody.innerHTML = articles.map(article => `
@@ -968,9 +970,30 @@ function updateArticlesTable(articles) {
     `).join('');
 }
 
+// Update recent articles in dashboard
+function updateRecentArticles(articles) {
+    const recentArticles = document.getElementById('recentArticles');
+    if (!recentArticles) return;
+    
+    const recentItems = articles.slice(0, 3).map(article => `
+        <div class="recent-item">
+            <div class="item-info">
+                <h4>${article.title}</h4>
+                <p>פורסם לפני ${Math.floor((new Date() - new Date(article.date)) / (1000 * 60 * 60 * 24))} ימים</p>
+            </div>
+            <div class="item-actions">
+                <button class="btn-icon edit" onclick="editArticle('${article._id}')"><i class="fas fa-edit"></i></button>
+                <button class="btn-icon delete" onclick="deleteArticle('${article._id}')"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+    
+    recentArticles.innerHTML = recentItems || '<div class="no-items">אין מאמרים זמינים</div>';
+}
+
 // Update contacts table
 function updateContactsTable(contacts) {
-    const tbody = document.querySelector('#submissions-section .admin-table tbody');
+    const tbody = document.querySelector('#contactsTableBody');
     if (!tbody) return;
     
     tbody.innerHTML = contacts.map(contact => `
@@ -986,6 +1009,34 @@ function updateContactsTable(contacts) {
             </td>
         </tr>
     `).join('');
+}
+
+// Update recent contacts in dashboard
+function updateRecentContacts(contacts) {
+    const recentContacts = document.getElementById('recentContacts');
+    if (!recentContacts) return;
+    
+    const recentItems = contacts.slice(0, 3).map(contact => {
+        const statusClass = contact.status === 'new' ? 'new' :
+                          contact.status === 'in-progress' ? 'pending' : 'responded';
+        const statusText = contact.status === 'new' ? 'חדש' :
+                         contact.status === 'in-progress' ? 'ממתין' : 'טופל';
+        
+        return `
+            <div class="recent-item">
+                <div class="item-info">
+                    <h4>${contact.companyName}</h4>
+                    <p>${getReasonText(contact.reason)}</p>
+                    <span class="item-status ${statusClass}">${statusText}</span>
+                </div>
+                <div class="item-actions">
+                    <button class="btn-icon view" onclick="viewSubmission('${contact._id}')"><i class="fas fa-eye"></i></button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    recentContacts.innerHTML = recentItems || '<div class="no-items">אין פניות זמינות</div>';
 }
 
 // Update statistics display

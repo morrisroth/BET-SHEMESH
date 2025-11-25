@@ -128,37 +128,8 @@
                                 <a href="#articles" class="view-all">צפייה בכולם</a>
                             </div>
                             <div class="card-content">
-                                <div class="recent-items">
-                                    <div class="recent-item">
-                                        <div class="item-info">
-                                            <h4>הכשרות החדשות בסייבר 2023</h4>
-                                            <p>פורסם לפני 2 ימים</p>
-                                        </div>
-                                        <div class="item-actions">
-                                            <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
-                                            <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="recent-item">
-                                        <div class="item-info">
-                                            <h4>סטארטאפ מקומי גייס 10 מיליון דולר</h4>
-                                            <p>פורסם לפני 5 ימים</p>
-                                        </div>
-                                        <div class="item-actions">
-                                            <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
-                                            <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="recent-item">
-                                        <div class="item-info">
-                                            <h4>תוכנית הכשרה חדשה ל-Full Stack</h4>
-                                            <p>פורסם לפני שבוע</p>
-                                        </div>
-                                        <div class="item-actions">
-                                            <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
-                                            <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                        </div>
-                                    </div>
+                                <div class="recent-items" id="recentArticles">
+                                    <div class="loading">טוען מאמרים אחרונים...</div>
                                 </div>
                             </div>
                         </div>
@@ -169,37 +140,8 @@
                                 <a href="#submissions" class="view-all">צפייה בכולן</a>
                             </div>
                             <div class="card-content">
-                                <div class="recent-items">
-                                    <div class="recent-item">
-                                        <div class="item-info">
-                                            <h4>Tech Solutions Ltd</h4>
-                                            <p>מחפשים 5 מפתחי Frontend</p>
-                                            <span class="item-status new">חדש</span>
-                                        </div>
-                                        <div class="item-actions">
-                                            <button class="btn-icon view"><i class="fas fa-eye"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="recent-item">
-                                        <div class="item-info">
-                                            <h4>App Innovations</h4>
-                                            <p>שיתוף פעולה לפרויקט מיוחד</p>
-                                            <span class="item-status pending">ממתין</span>
-                                        </div>
-                                        <div class="item-actions">
-                                            <button class="btn-icon view"><i class="fas fa-eye"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="recent-item">
-                                        <div class="item-info">
-                                            <h4>Cloud Systems</h4>
-                                            <p>אירוע גיוס למפתחים</p>
-                                            <span class="item-status responded">טופל</span>
-                                        </div>
-                                        <div class="item-actions">
-                                            <button class="btn-icon view"><i class="fas fa-eye"></i></button>
-                                        </div>
-                                    </div>
+                                <div class="recent-items" id="recentContacts">
+                                    <div class="loading">טוען פניות אחרונות...</div>
                                 </div>
                             </div>
                         </div>
@@ -225,35 +167,10 @@
                                     <th>פעולות</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="articlesTableBody">
                                 <tr>
-                                    <td>הכשרות החדשות בסייבר 2023</td>
-                                    <td>מנהל מערכת</td>
-                                    <td>18/11/2023</td>
-                                    <td><span class="status published">פורסם</span></td>
-                                    <td>
-                                        <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>סטארטאפ מקומי גייס 10 מיליון דולר</td>
-                                    <td>מנהל מערכת</td>
-                                    <td>15/11/2023</td>
-                                    <td><span class="status published">פורסם</span></td>
-                                    <td>
-                                        <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>תוכנית הכשרה חדשה ל-Full Stack</td>
-                                    <td>מנהל מערכת</td>
-                                    <td>11/11/2023</td>
-                                    <td><span class="status draft">טיוטה</span></td>
-                                    <td>
-                                        <button class="btn-icon edit"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                                    <td colspan="5" class="loading-row">
+                                        <div class="loading">טוען מאמרים...</div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -312,27 +229,10 @@
                                     <th>פעולות</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="contactsTableBody">
                                 <tr>
-                                    <td>Tech Solutions Ltd</td>
-                                    <td>דניאל כהן</td>
-                                    <td>גיוס מפתחים</td>
-                                    <td>20/11/2023</td>
-                                    <td><span class="status new">חדש</span></td>
-                                    <td>
-                                        <button class="btn-icon view"><i class="fas fa-eye"></i></button>
-                                        <button class="btn-icon respond"><i class="fas fa-reply"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>App Innovations</td>
-                                    <td>שרה לוי</td>
-                                    <td>שיתוף פעולה</td>
-                                    <td>19/11/2023</td>
-                                    <td><span class="status pending">ממתין</span></td>
-                                    <td>
-                                        <button class="btn-icon view"><i class="fas fa-eye"></i></button>
-                                        <button class="btn-icon respond"><i class="fas fa-reply"></i></button>
+                                    <td colspan="6" class="loading-row">
+                                        <div class="loading">טוען פניות...</div>
                                     </td>
                                 </tr>
                             </tbody>
