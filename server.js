@@ -203,6 +203,25 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
+// Verify token endpoint
+app.get('/api/auth/verify', verifyToken, (req, res) => {
+    res.json({
+        message: 'Token is valid',
+        user: {
+            id: req.user.id,
+            username: req.user.username,
+            role: req.user.role
+        }
+    });
+});
+
+// Logout endpoint
+app.post('/api/auth/logout', verifyToken, (req, res) => {
+    // In a real application, you might want to blacklist the token
+    // For now, we'll just clear it on the client side
+    res.json({ message: 'Logout successful' });
+});
+
 // Articles API
 app.get('/api/articles', async (req, res) => {
     try {

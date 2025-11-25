@@ -42,7 +42,11 @@ function checkAuth() {
     })
     .catch(error => {
         console.error('Authentication error:', error);
+        // Clear all auth-related items
         localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        localStorage.removeItem('loginTime');
+        localStorage.removeItem('adminLoggedIn');
         window.location.href = 'login.html';
     });
 }
@@ -873,12 +877,20 @@ function logout() {
     })
     .then(response => response.json())
     .then(data => {
+        // Clear all auth-related items
         localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        localStorage.removeItem('loginTime');
+        localStorage.removeItem('adminLoggedIn');
         window.location.href = 'login.html';
     })
     .catch(error => {
         console.error('Logout error:', error);
+        // Clear all auth-related items
         localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        localStorage.removeItem('loginTime');
+        localStorage.removeItem('adminLoggedIn');
         window.location.href = 'login.html';
     });
 }

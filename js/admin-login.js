@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('adminToken', data.token);
                 localStorage.setItem('adminUser', JSON.stringify(data.user));
                 localStorage.setItem('loginTime', new Date().toISOString());
+                localStorage.setItem('adminLoggedIn', 'true'); // Add this for consistency
                 
                 // Redirect to dashboard
                 window.location.href = 'dashboard.html';
