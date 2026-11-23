@@ -4,12 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     const errorMessage = document.getElementById('error-message');
     
-    // Simple demo credentials (in real app, this would be server-side)
-    const DEMO_CREDENTIALS = {
-        username: 'admin',
-        password: 'beitshemeshtech2023'
-    };
-    
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -130,12 +124,6 @@ function validateInputs(username, password) {
     }
     
     return isValid;
-}
-
-function authenticate(username, password) {
-    // In a real application, this would be an API call to the server
-    // For demo purposes, we'll use simple credential checking
-    return username === DEMO_CREDENTIALS.username && password === DEMO_CREDENTIALS.password;
 }
 
 function showError(message) {

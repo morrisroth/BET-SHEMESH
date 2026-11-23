@@ -105,7 +105,8 @@ const User = mongoose.model('User', UserSchema);
 const Statistics = mongoose.model('Statistics', StatisticsSchema);
 
 // JWT Secret
-const JWT_SECRET = process.env.JWT_SECRET || 'beitshemeshtech2023secret';
+const JWT_SECRET = process.env.JWT_SECRET;
+const jwtConfigured = Boolean(JWT_SECRET?.trim());
 
 // Email configuration
 const transporter = nodemailer.createTransport({
@@ -121,6 +122,10 @@ const transporter = nodemailer.createTransport({
 
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
+    if (!jwtConfigured) {
+        return res.status(503).json({ message: 'Authentication is not configured' });
+    }
+
     const token = req.headers['authorization']?.split(' ')[1];
 
     if (!token) {
@@ -167,6 +172,10 @@ app.get('/admin/dashboard.html', verifyToken, (req, res) => {
 
 // Authentication
 app.post('/api/auth/login', async (req, res) => {
+    if (!jwtConfigured) {
+        return res.status(503).json({ message: 'Authentication is not configured' });
+    }
+
     try {
         const { username, password } = req.body;
 
@@ -562,28 +571,12 @@ app.get('/api/analytics', verifyToken, async (req, res) => {
     }
 });
 
-// Initialize default admin user
-const initializeAdmin = async () => {
-    try {
-        const adminExists = await User.findOne({ username: 'admin' });
-        if (!adminExists) {
-            const hashedPassword = await bcrypt.hash('beitshemeshtech2023', 10);
-            const admin = new User({ username: 'admin', password: hashedPassword, role: 'admin' });
-            await admin.save();
-            console.log('Default admin user created');
-        }
-    } catch (error) {
-        console.log('Error creating admin user:', error.message);
-    }
-};
-
 // MongoDB Connection
 mongoose.connect(MONGO_URI)
 .then(() => console.log("MongoDB connected"))
 .catch(err => console.error("MongoDB error:", err));
 
 // Start server
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    await initializeAdmin();
 });
